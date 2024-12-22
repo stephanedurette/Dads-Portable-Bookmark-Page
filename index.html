@@ -9,7 +9,19 @@
   </head>
   <body>
     <h1>Links</h1>
-    <input id = 'file' type = 'file' />
+    <form id = "form" class="hidden">
+      <h6><b>Add Link</b></h6><br>
+      <label for="title">Title:</label><br>
+      <input type="text" id="title" name="title"><br>
+      <label for="description">Description:</label><br>
+      <input type="text" id="description" name="description"><br>
+      <label for="url">URL:</label><br>
+      <input type="text" id="url" name="url"><br>
+      <button onclick="SubmitForm()">Save Link</button>
+      <button onclick="CancelForm()">Cancel</button>
+    </form>
+    <input id = 'file' type = 'file' /><br>
+    <button id="addLinkButton" class="hidden" onclick="AddLink()">+</button>
     <ul id="linksParent" class="hidden">
 
     </ul>

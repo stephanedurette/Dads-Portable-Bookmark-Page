@@ -5,16 +5,43 @@ var uploadFile = document.getElementById('file');
 var fileDownload = document.getElementById('fileDownload');
 var linksparent = document.getElementById('linksParent');
 
+var linkEditForm = document.getElementById('form');
+
+var addLinkButton = document.getElementById('addLinkButton');
+
 var linksJsonObject = null;
 var downloadableTextFile = null;
+
+function EditExistingLink(){
+    
+}
+
+function AddLink(){
+    linkEditForm.classList.remove('hidden');
+}
+
+function CancelForm(){
+    linkEditForm.classList.add('hidden');
+}
+
+function SubmitForm(){
+    linkEditForm.classList.add('hidden');
+}
+
+linkEditForm.onsubmit = function(event) {
+    event.preventDefault();
+    return false;
+}
 
 function SetJsonObject(newValue){
     if (newValue == null){
         fileDownload.classList.add('hidden')
         linksparent.classList.add('hidden')
+        addLinkButton.classList.add('hidden')
     } else {
         fileDownload.classList.remove('hidden')
         linksparent.classList.remove('hidden')
+        addLinkButton.classList.remove('hidden')
         PopulateLinks(newValue);
     }
     linksJsonObject = newValue;
