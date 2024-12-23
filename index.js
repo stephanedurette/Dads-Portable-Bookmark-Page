@@ -1,6 +1,9 @@
 //https://stackoverflow.com/questions/23344776/how-to-access-data-of-uploaded-json-file -> access file
 //https://stackoverflow.com/questions/21012580/is-it-possible-to-write-data-to-file-using-only-javascript -> download file
 
+//replace title with categories, separate UL's for each category -> Folder = category, drop down menu :'(
+//can edit folder names 
+
 var uploadFile = document.getElementById('file');
 var fileDownload = document.getElementById('fileDownload');
 var linksparent = document.getElementById('linksParent');
