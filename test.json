@@ -1,12 +1,28 @@
 [
     {
-        "title":"Link Title",
-        "description":"blah blah blah",
-        "url":"https://www.youtube.com"   
+        "folder":"machines",
+        "links":[
+            {
+                "description":"my favorite machine", 
+                "url":"https://www.youtube.com"
+            },
+            {
+                "description":"my favorite machine", 
+                "url":"https://www.youtube.com"
+            }
+        ]
     },
     {
-        "title":"Second Title",
-        "description":"blah blah blah 2",
-        "url":"https://www.youtube.com"   
+        "folder":"non-machines",
+        "links":[
+            {
+                "description":"my favffffachine", 
+                "url":"https://www.youtube.com"
+            },
+            {
+                "description":"my favoffffchine", 
+                "url":"https://www.youtube.com"
+            }
+        ]
     }
 ]
