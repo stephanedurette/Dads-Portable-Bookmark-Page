@@ -1,26 +1,21 @@
 //https://stackoverflow.com/questions/23344776/how-to-access-data-of-uploaded-json-file -> access file
 //https://stackoverflow.com/questions/21012580/is-it-possible-to-write-data-to-file-using-only-javascript -> download file
 
-//replace title with categories, separate UL's for each category -> Folder = category, drop down menu :'(
-//can edit folder names 
-
 var uploadFile = document.getElementById('file');
 var fileDownload = document.getElementById('fileDownload');
 var linksParent = document.getElementById('linksParent');
 var foldersParent = document.getElementById('folders');
-
 var linkEditForm = document.getElementById('form');
-
 var addLinkButton = document.getElementById('addLinkButton');
 
 var linksJsonObject = null;
 var downloadableTextFile = null;
 
-function AddLink(){
+function OpenForm(){
     linkEditForm.classList.remove('hidden');
 }
 
-function CancelForm(){
+function CloseForm(){
     linkEditForm.classList.add('hidden');
 }
 
@@ -91,7 +86,7 @@ function PopulateLinks(jsonObj){
                     `
                     <li>
                         <b><a target=”_blank” href="${link.url}">${link.description}</a></b>
-                        <button onclick="EditLink('${object.folder}','${link.description}')">edit</button>
+                        <button onclick="OpenEditLinkForm('${object.folder}','${link.description}')">edit</button>
                         <button onclick="DeleteLink('${object.folder}','${link.description}')">delete</button>
                     </li>
                     `
@@ -106,8 +101,22 @@ function PopulateLinks(jsonObj){
     })
 }
 
+function OpenEditLinkForm(folder, description){
+    OpenForm();
+
+}
+
+function OpenAddLinkForm(){
+    OpenForm();
+}
+
 function EditLink(folder, description){
     alert(`${folder}    ${description}`);
+    CloseForm();
+}
+
+function AddLink(folder, description, url){
+
 }
 
 function DeleteLink(folder, description){
