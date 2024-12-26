@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <h1>Links</h1>
+
+    <!-- Link Form -->
     <form id = "form" class="hidden">
       <h6><b>Add Link</b></h6><br>
 
@@ -27,14 +28,16 @@
       <button onclick="SubmitForm()">Save Link</button>
       <button onclick="CancelForm()">Cancel</button>
     </form>
-    <input id = 'file' type = 'file' /><br>
-    <button id="addLinkButton" class="hidden" onclick="AddLink()">+</button>
+    <!-- End Link Form -->
 
-    <div id="linksParent" class="hidden">
+    <input id = 'file' type = 'file' /><br>
+    <button id="addLinkButton"  onclick="OpenAddLinkForm()">+</button>
+
+    <div id="linksParent">
       <!-- populated dynamically-->
     </div>
     
-    <a class="hidden" href="" id="fileDownload" download="shortcuts.json">Download New Edited File</a>
+    <button onclick="DownloadLinkFile()">Download Link File</button>
     <script src="index.js"></script>
   </body>
 </html>

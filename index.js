@@ -1,5 +1,6 @@
 //https://stackoverflow.com/questions/23344776/how-to-access-data-of-uploaded-json-file -> access file
 //https://stackoverflow.com/questions/21012580/is-it-possible-to-write-data-to-file-using-only-javascript -> download file
+//https://www.therogerlab.com/sandbox/pages/how-to-create-and-download-a-file-in-javascript?s=0ea4985d74a189e8b7b547976e7192ae.7213739ce01001e16cc74602189bfa09 --> download link file
 
 var uploadFile = document.getElementById('file');
 var fileDownload = document.getElementById('fileDownload');
@@ -8,8 +9,7 @@ var foldersParent = document.getElementById('folders');
 var linkEditForm = document.getElementById('form');
 var addLinkButton = document.getElementById('addLinkButton');
 
-var linksJsonObject = null;
-var downloadableTextFile = null;
+var linksJsonObject = [];
 
 function OpenForm(){
     linkEditForm.classList.remove('hidden');
@@ -29,19 +29,10 @@ linkEditForm.onsubmit = function(event) {
 }
 
 function SetJsonObject(newValue){
-    if (newValue == null){
-        fileDownload.classList.add('hidden')
-        linksParent.classList.add('hidden')
-        addLinkButton.classList.add('hidden')
-    } else {
-        fileDownload.classList.remove('hidden')
-        linksParent.classList.remove('hidden')
-        addLinkButton.classList.remove('hidden')
-        PopulateLinks(newValue);
-        PopulateDropDownOptions(newValue);
-    }
     linksJsonObject = newValue;
-    UpdateDownloadFile(linksJsonObject);
+
+    PopulateLinks(newValue);
+    PopulateDropDownOptions(newValue);
 }
 
 async function ReadJSONFile(file) {
@@ -103,7 +94,7 @@ function PopulateLinks(jsonObj){
 
 function OpenEditLinkForm(folder, description){
     OpenForm();
-
+    
 }
 
 function OpenAddLinkForm(){
@@ -132,16 +123,23 @@ function DeleteLink(folder, description){
 
 }
 
-async function UpdateDownloadFile(jsonObj) {
-    var data = new Blob([JSON.stringify(jsonObj)], {type: 'text/plain'});
+function DownloadLinkFile(){
+    //create or obtain the file's content
+  var content = JSON.stringify(linksJsonObject);
 
-    if (downloadableTextFile !== null) {
-        window.URL.revokeObjectURL(downloadableTextFile);
-    }
+  //create a file and put the content, name and type
+  var file = new File(["\ufeff"+content], 'myFile.txt', {type: "text/plain:charset=UTF-8"});
 
-    downloadableTextFile = window.URL.createObjectURL(data);
+  //create a ObjectURL in order to download the created file
+  url = window.URL.createObjectURL(file);
 
-    fileDownload.setAttribute('href', downloadableTextFile);
+  //create a hidden link and set the href and click it
+  var a = document.createElement("a");
+  a.style = "display: none";
+  a.href = url;
+  a.download = file.name;
+  a.click();
+  window.URL.revokeObjectURL(url);
 }
 
 uploadFile.addEventListener('change', (event) => {
