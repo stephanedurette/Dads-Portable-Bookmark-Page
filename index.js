@@ -88,7 +88,20 @@ function PopulateLinks(jsonObj){
 }
 
 function OpenEditLinkForm(folder, description){
+    OpenForm();
+    
+    var f = linksJsonObject.filter(obj => obj.folder == folder)[0];
+    var link = f.links.filter(l => l.description == description)[0];
 
+    formDescription.value = link.description
+    formURL.value = link.url
+    formFolder.value = folder
+
+    saveLinkButton.onclick = () => {
+        DeleteLink(folder, link.description);
+        AddLink(formFolder.value, formDescription.value, formURL.value);
+        CloseForm();
+    }
 }
 
 function OpenAddLinkForm(){
@@ -102,10 +115,6 @@ function OpenAddLinkForm(){
         AddLink(formFolder.value, formDescription.value, formURL.value);
         CloseForm();
     }
-}
-
-function EditLink(folder, description){
-    
 }
 
 function AddLink(folderName, description, url){
@@ -138,7 +147,7 @@ function DeleteLink(folder, description){
 function DownloadLinkFile(){
   var content = JSON.stringify(linksJsonObject);
 
-  var file = new File(["\ufeff"+content], 'myFile.txt', {type: "text/plain:charset=UTF-8"});
+  var file = new File(["\ufeff"+content], 'links.json', {type: "text/plain:charset=UTF-8"});
 
   //create a ObjectURL in order to download the created file
   url = window.URL.createObjectURL(file);
