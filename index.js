@@ -43,12 +43,12 @@ async function ReadJSONFile(file) {
 }
 
 function PopulateDropDownOptions(jsonObj){
-    var foldersParentInnerHTML = document.getElementById('folders').innerHTML;
+    var foldersParent = document.getElementById('folders');
 
-    foldersParentInnerHTML = ""
+    foldersParent.innerHTML = ""
 
     jsonObj.forEach(object => {
-        foldersParentInnerHTML += 
+        foldersParent.innerHTML += 
         `
         <option value=${object.folder}>
         `
@@ -56,19 +56,19 @@ function PopulateDropDownOptions(jsonObj){
 }
 
 function PopulateLinks(jsonObj){
-    var linksParentHTML = document.getElementById('linksParent').innerHTML;
+    var linksParent = document.getElementById('linksParent');
 
-    linksParentHTML = "";
+    linksParent.innerHTML = "";
 
     jsonObj.forEach(object => {
-        linksParentHTML += 
+        linksParent.innerHTML += 
         `
         <h2>${object.folder}</h2>
             <ul>
         `
         
         object.links.forEach(link => {
-            linksParentHTML +=
+            linksParent.innerHTML +=
                     `
                     <li>
                         <b><a target=”_blank” href="${link.url}">${link.description}</a></b>
@@ -79,7 +79,7 @@ function PopulateLinks(jsonObj){
             });
         
         
-        linksParentHTML += 
+        linksParent.innerHTML += 
         `
             </ul>
         `
@@ -88,20 +88,39 @@ function PopulateLinks(jsonObj){
 }
 
 function OpenEditLinkForm(folder, description){
-    OpenForm();
-    
+
 }
 
 function OpenAddLinkForm(){
     OpenForm();
+    
+    formDescription.value = ""
+    formURL.value = ""
+    formFolder.value = ""
+
+    saveLinkButton.onclick = () => {
+        AddLink(formFolder.value, formDescription.value, formURL.value);
+        CloseForm();
+    }
 }
 
 function EditLink(folder, description){
     
 }
 
-function AddLink(folder, description, url){
+function AddLink(folderName, description, url){
 
+    var jsonObjClone = JSON.parse(JSON.stringify(linksJsonObject));
+
+    var folder = jsonObjClone.filter(obj => obj.folder == folder)[0];
+
+    if (folder == null){
+        jsonObjClone.push({"folder":folderName, "links":[]})
+        folder = jsonObjClone.filter(obj => obj.folder == folderName)[0];
+    }
+    folder.links.push({"description":description, "url":url})
+
+    SetJsonObject(jsonObjClone);
 }
 
 function DeleteLink(folder, description){
@@ -114,7 +133,6 @@ function DeleteLink(folder, description){
     jsonObjClone = jsonObjClone.filter(folder => folder.links.length > 0);
 
     SetJsonObject(jsonObjClone);
-
 }
 
 function DownloadLinkFile(){
@@ -135,6 +153,7 @@ function DownloadLinkFile(){
 }
 
 document.getElementById('file').addEventListener('change', (event) => {
+
     var promise = ReadJSONFile(event.target.files[0]);
 
     promise.then(
@@ -142,7 +161,7 @@ document.getElementById('file').addEventListener('change', (event) => {
             SetJsonObject(value);
         },
         (error) => {
-            SetJsonObject(null);
+            SetJsonObject([]);
         }
     )
 });
