@@ -53,7 +53,7 @@ function PopulateDropDownOptions(){
     })
 }
 
-function PopulateLinks(jsonObj){
+function PopulateLinks(){
     var linksParent = document.getElementById('linksParent');
 
     linksParent.innerHTML = "";
