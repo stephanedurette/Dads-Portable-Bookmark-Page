@@ -2,6 +2,12 @@
 //https://stackoverflow.com/questions/21012580/is-it-possible-to-write-data-to-file-using-only-javascript -> download file
 //https://www.therogerlab.com/sandbox/pages/how-to-create-and-download-a-file-in-javascript?s=0ea4985d74a189e8b7b547976e7192ae.7213739ce01001e16cc74602189bfa09 --> download link file
 
+//TODO
+//add "add buttons" at every column
+//multiple same columns bug
+//can edit folder names
+//pin upload button and add link to the top
+
 //Submit Form Inputs
 var formDescription = document.getElementById('description');
 var formURL = document.getElementById('url');
