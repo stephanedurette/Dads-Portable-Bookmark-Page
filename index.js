@@ -20,11 +20,9 @@ function CloseForm(){
     document.getElementById('form').classList.add('hidden');
 }
 
-function SetJsonObject(newValue){
-    linksJsonObject = newValue;
-
-    PopulateLinks(newValue);
-    PopulateDropDownOptions(newValue);
+function RefreshPage(){
+    PopulateLinks();
+    PopulateDropDownOptions();
 }
 
 async function ReadJSONFile(file) {
@@ -42,12 +40,12 @@ async function ReadJSONFile(file) {
     })
 }
 
-function PopulateDropDownOptions(jsonObj){
+function PopulateDropDownOptions(){
     var foldersParent = document.getElementById('folders');
 
     foldersParent.innerHTML = ""
 
-    jsonObj.forEach(object => {
+    linksJsonObject.forEach(object => {
         foldersParent.innerHTML += 
         `
         <option value=${object.folder}>
@@ -60,7 +58,7 @@ function PopulateLinks(jsonObj){
 
     linksParent.innerHTML = "";
 
-    jsonObj.forEach(object => {
+    linksJsonObject.forEach(object => {
         linksParent.innerHTML += 
         `
         <h2>${object.folder}</h2>
@@ -73,7 +71,7 @@ function PopulateLinks(jsonObj){
                     <li>
                         <b><a target=”_blank” href="${link.url}">${link.description}</a></b>
                         <button onclick="OpenEditLinkForm('${object.folder}','${link.description}')">edit</button>
-                        <button onclick="DeleteLink('${object.folder}','${link.description}')">delete</button>
+                        <button onclick="OnDeleteButtonClick('${object.folder}','${link.description}')">delete</button>
                     </li>
                     `
             });
@@ -85,6 +83,11 @@ function PopulateLinks(jsonObj){
         `
 
     })
+}
+
+function OnDeleteButtonClick(folder, description){
+    DeleteLink(folder, description)
+    RefreshPage()
 }
 
 function OpenEditLinkForm(folder, description){
@@ -101,6 +104,7 @@ function OpenEditLinkForm(folder, description){
         DeleteLink(folder, link.description);
         AddLink(formFolder.value, formDescription.value, formURL.value);
         CloseForm();
+        RefreshPage();
     }
 }
 
@@ -114,34 +118,28 @@ function OpenAddLinkForm(){
     saveLinkButton.onclick = () => {
         AddLink(formFolder.value, formDescription.value, formURL.value);
         CloseForm();
+        RefreshPage();
     }
 }
 
 function AddLink(folderName, description, url){
 
-    var jsonObjClone = JSON.parse(JSON.stringify(linksJsonObject));
-
-    var folder = jsonObjClone.filter(obj => obj.folder == folder)[0];
+    var folder = linksJsonObject.filter(obj => obj.folder == folder)[0];
 
     if (folder == null){
-        jsonObjClone.push({"folder":folderName, "links":[]})
-        folder = jsonObjClone.filter(obj => obj.folder == folderName)[0];
+        linksJsonObject.push({"folder":folderName, "links":[]})
+        folder = linksJsonObject.filter(obj => obj.folder == folderName)[0];
     }
     folder.links.push({"description":description, "url":url})
-
-    SetJsonObject(jsonObjClone);
 }
 
 function DeleteLink(folder, description){
-    var jsonObjClone = JSON.parse(JSON.stringify(linksJsonObject)); 
 
-    var folder = jsonObjClone.filter(obj => obj.folder == folder)[0];
+    var folder = linksJsonObject.filter(obj => obj.folder == folder)[0];
 
     folder.links = folder.links.filter(link => link.description != description);
 
-    jsonObjClone = jsonObjClone.filter(folder => folder.links.length > 0);
-
-    SetJsonObject(jsonObjClone);
+    linksJsonObject = linksJsonObject.filter(folder => folder.links.length > 0);
 }
 
 function DownloadLinkFile(){
@@ -167,10 +165,12 @@ document.getElementById('file').addEventListener('change', (event) => {
 
     promise.then(
         (value) => {
-            SetJsonObject(value);
+            linksJsonObject = value;
+            RefreshPage();
         },
         (error) => {
-            SetJsonObject([]);
+            linksJsonObject = [];
+            RefreshPage();
         }
     )
 });
