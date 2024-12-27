@@ -25,19 +25,20 @@
         <!-- populated dynamically-->
       </datalist>
 
-      <button onclick="SubmitForm()">Save Link</button>
-      <button onclick="CancelForm()">Cancel</button>
+      <button type="button" id="saveLinkButton">Save Link</button>
+      <button type="button" onclick="CloseForm()">Cancel</button>
     </form>
     <!-- End Link Form -->
 
-    <input id = 'file' type = 'file' /><br>
+    <label for="file">Upload JSON: </label>
+    <input id = 'file' type = 'file' accept=".json"/><br>
     <button id="addLinkButton"  onclick="OpenAddLinkForm()">+</button>
 
     <div id="linksParent">
       <!-- populated dynamically-->
     </div>
     
-    <button onclick="DownloadLinkFile()">Download Link File</button>
+    <button onclick="DownloadLinkFile()">Download JSON</button>
     <script src="index.js"></script>
   </body>
 </html>

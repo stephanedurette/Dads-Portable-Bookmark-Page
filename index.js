@@ -2,30 +2,22 @@
 //https://stackoverflow.com/questions/21012580/is-it-possible-to-write-data-to-file-using-only-javascript -> download file
 //https://www.therogerlab.com/sandbox/pages/how-to-create-and-download-a-file-in-javascript?s=0ea4985d74a189e8b7b547976e7192ae.7213739ce01001e16cc74602189bfa09 --> download link file
 
-var uploadFile = document.getElementById('file');
-var fileDownload = document.getElementById('fileDownload');
-var linksParent = document.getElementById('linksParent');
-var foldersParent = document.getElementById('folders');
-var linkEditForm = document.getElementById('form');
-var addLinkButton = document.getElementById('addLinkButton');
+//Submit Form Inputs
+var formDescription = document.getElementById('description');
+var formURL = document.getElementById('url');
+var formFolder = document.getElementById('folder');
+
+//Submit Form Button
+var saveLinkButton = document.getElementById('saveLinkButton')
 
 var linksJsonObject = [];
 
 function OpenForm(){
-    linkEditForm.classList.remove('hidden');
+    document.getElementById('form').classList.remove('hidden');
 }
 
 function CloseForm(){
-    linkEditForm.classList.add('hidden');
-}
-
-function SubmitForm(){
-    linkEditForm.classList.add('hidden');
-}
-
-linkEditForm.onsubmit = function(event) {
-    event.preventDefault();
-    return false;
+    document.getElementById('form').classList.add('hidden');
 }
 
 function SetJsonObject(newValue){
@@ -51,10 +43,12 @@ async function ReadJSONFile(file) {
 }
 
 function PopulateDropDownOptions(jsonObj){
-    foldersParent.innerHTML = ""
+    var foldersParentInnerHTML = document.getElementById('folders').innerHTML;
+
+    foldersParentInnerHTML = ""
 
     jsonObj.forEach(object => {
-        foldersParent.innerHTML += 
+        foldersParentInnerHTML += 
         `
         <option value=${object.folder}>
         `
@@ -62,18 +56,19 @@ function PopulateDropDownOptions(jsonObj){
 }
 
 function PopulateLinks(jsonObj){
+    var linksParentHTML = document.getElementById('linksParent').innerHTML;
 
-    linksParent.innerHTML = "";
+    linksParentHTML = "";
 
     jsonObj.forEach(object => {
-        linksParent.innerHTML += 
+        linksParentHTML += 
         `
         <h2>${object.folder}</h2>
             <ul>
         `
         
         object.links.forEach(link => {
-                linksParent.innerHTML +=
+            linksParentHTML +=
                     `
                     <li>
                         <b><a target=”_blank” href="${link.url}">${link.description}</a></b>
@@ -84,7 +79,7 @@ function PopulateLinks(jsonObj){
             });
         
         
-        linksParent.innerHTML += 
+        linksParentHTML += 
         `
             </ul>
         `
@@ -102,8 +97,7 @@ function OpenAddLinkForm(){
 }
 
 function EditLink(folder, description){
-    alert(`${folder}    ${description}`);
-    CloseForm();
+    
 }
 
 function AddLink(folder, description, url){
@@ -124,10 +118,8 @@ function DeleteLink(folder, description){
 }
 
 function DownloadLinkFile(){
-    //create or obtain the file's content
   var content = JSON.stringify(linksJsonObject);
 
-  //create a file and put the content, name and type
   var file = new File(["\ufeff"+content], 'myFile.txt', {type: "text/plain:charset=UTF-8"});
 
   //create a ObjectURL in order to download the created file
@@ -142,7 +134,7 @@ function DownloadLinkFile(){
   window.URL.revokeObjectURL(url);
 }
 
-uploadFile.addEventListener('change', (event) => {
+document.getElementById('file').addEventListener('change', (event) => {
     var promise = ReadJSONFile(event.target.files[0]);
 
     promise.then(
