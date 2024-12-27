@@ -7,6 +7,15 @@
 //multiple same columns bug
 //can edit folder names
 //pin upload button and add link to the top
+//download file picker
+//"collapse" button for folders
+//use json file that's in this folder instead of an external one
+//export HTML link page?????
+//kill myself
+//style page
+
+//NICE TO HAVE
+//nestable folders
 
 //Submit Form Inputs
 var formDescription = document.getElementById('description');
