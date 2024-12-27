@@ -48,7 +48,7 @@ function PopulateDropDownOptions(){
     linksJsonObject.forEach(object => {
         foldersParent.innerHTML += 
         `
-        <option value=${object.folder}>
+        <option value="${object.folder}">
         `
     })
 }
